@@ -18,7 +18,20 @@ class Home extends Component {
 
     let savedAuthToken = localStorage.getItem("auth_token");
     if (savedAuthToken) {
+      // token test
       axios.defaults.headers.common["Authorization"] = `Bearer ${savedAuthToken}`;
+      (async () => {
+        try {
+          await axios.post(`${process.env.REACT_APP_APP_SERVER_ENTRY}/v1/token/test`, {});
+        } catch (err) {
+          console.log(err);
+          const status = err?.response?.status;
+          if (status === 401) {
+            // token expired
+            localStorage.removeItem("auth_token");
+          }
+        }
+      })();
     } else {
       window.location.href = "/signin";
     }
