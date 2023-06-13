@@ -9,7 +9,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    this.menus = ["dashboard", "version"];
+    this.menus = ["dashboard", "version", "logout"];
     this.defaultMenu = "dashboard";
 
     this.state = {
@@ -38,6 +38,10 @@ class Home extends Component {
   }
 
   menuSelectHandler = (menu) => {
+    if (menu === "logout") {
+      localStorage.removeItem("auth_token");
+      window.location.href = "/signin";
+    }
     this.setState({
       selected_menu: menu,
     });
